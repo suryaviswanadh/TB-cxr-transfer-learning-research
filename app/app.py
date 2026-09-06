@@ -31,7 +31,8 @@ DISCLAIMER = CONFIG["app"]["disclaimer"]
 def get_checkpoint_choices() -> list[str]:
     if not CHECKPOINT_DIR.exists():
         return []
-    return sorted(p.name for p in CHECKPOINT_DIR.iterdir() if p.is_file())
+    supported_suffixes = {".pt", ".pth", ".ckpt"}
+    return sorted(p.name for p in CHECKPOINT_DIR.iterdir() if p.is_file() and p.suffix.lower() in supported_suffixes)
 
 
 def _safe_state_dict(candidate: Any) -> dict[str, torch.Tensor]:
