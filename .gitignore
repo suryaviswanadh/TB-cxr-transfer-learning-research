@@ -33,6 +33,7 @@ results/*
 *.pth
 *.ckpt
 *.onnx
+!checkpoints/densenet121_fold0_best.pth
 
 # OS files
 .DS_Store

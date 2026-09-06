@@ -160,12 +160,29 @@ Then open the generated local URL in a browser, upload a chest X-ray image, choo
 
 ## 15. Checkpoint placement
 
-Place trained model checkpoints in the checkpoints directory. The application checks for:
+The repository includes the validated DenseNet121 Paper 1 checkpoint:
+
+```text
+checkpoints/densenet121_fold0_best.pth
+```
+
+The checkpoint is approximately 28 MB and is included in GitHub so a collaborator can obtain it by cloning the repository. The application checks for:
 
 - raw state_dict
 - dictionary containing state_dict or model_state_dict
 
 If loading fails, the UI shows a clear error rather than generating a fake output.
+
+After cloning, install dependencies and launch the application:
+
+```powershell
+git clone https://github.com/suryaviswanadh/TB-cxr-transfer-learning-research.git
+cd TB-cxr-transfer-learning-research
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+python .\app\app.py
+```
 
 ## 16. Limitations
 
