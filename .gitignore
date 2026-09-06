@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Tooling
+.vscode/
+.idea/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Notebooks and local artifacts
+.ipynb_checkpoints/
+*.log
+
+# Model weights and generated outputs
+checkpoints/*
+!checkpoints/.gitkeep
+results/*
+!results/tables/
+!results/figures/
+!results/tables/.gitkeep
+!results/figures/.gitkeep
+*.pt
+*.pth
+*.ckpt
+*.onnx
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,30 @@
+experiment:
+  name: "TB_CXR_TransferLearning"
+  seed: 42
+  num_classes: 2
+  class_names:
+    - "Normal"
+    - "TB-consistent"
+
+preprocessing:
+  img_size: 224
+
+  clahe:
+    clip_limit: 2.0
+    tile_grid_size: [8, 8]
+
+  normalization:
+    mean: [0.485, 0.456, 0.406]
+    std: [0.229, 0.224, 0.225]
+
+models:
+  supported:
+    - "resnet50"
+    - "densenet121"
+    - "efficientnet_b0"
+
+app:
+  title: "Tuberculosis Chest X-Ray Screening Research Prototype"
+  disclaimer: "RESEARCH PROTOTYPE ONLY — NOT FOR CLINICAL DIAGNOSIS"
+
+checkpoint_dir: "checkpoints"
