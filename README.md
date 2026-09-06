@@ -109,13 +109,28 @@ Paper 2 begins only after the actual best architecture is selected from the Pape
 
 This repository remains architecture-agnostic and does not assume the winning Paper 1 model in advance.
 
-## 11. Grad-CAM
+## 11. Kaggle benchmark notebook and recorded output
+
+The complete Kaggle benchmark notebook is available at `notebooks/paper1_kaggle_benchmark.ipynb`. It performs dataset auditing, stratified fold generation, model benchmarking, OOF evaluation, efficiency profiling, artifact export, and a formal OOF audit.
+
+The attached notebook contains multiple benchmark runs. The later run uses the requested Paper 1 settings, including batch size 32 and the specified training augmentation. Its stored output reports:
+
+- DenseNet121 global OOF ROC-AUC: 0.9586
+- DenseNet121 five-fold mean ROC-AUC: 0.9615 +/- 0.0048
+- EfficientNet-B0 global OOF ROC-AUC: 0.9422
+- ResNet50 global OOF ROC-AUC: 0.9394
+
+Under the notebook's primary selection rule, highest global OOF ROC-AUC, DenseNet121 is the empirical Paper 1 selection from that recorded run. The complete table and the earlier run distinction are documented in `results/paper1_kaggle_results.md`.
+
+These are benchmark outputs from the stored Kaggle notebook, not external validation results and not clinical diagnostic evidence.
+
+## 12. Grad-CAM
 
 The reusable Grad-CAM implementation in src.gradcam.py provides class activation visualization for the supported architectures. It resolves the target layer programmatically, verifies that the activation tensor is spatially valid, registers hooks safely, captures activations and gradients, computes a Grad-CAM heatmap, normalizes it, and resizes it to the original image dimensions.
 
 Grad-CAM is an exploratory model-attribution visualization and is not validated clinical ground truth or a lesion-localization method.
 
-## 12. Installation
+## 13. Installation
 
 Create and activate a virtual environment, then install the project requirements:
 
@@ -133,7 +148,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-## 13. Application usage
+## 14. Application usage
 
 Launch the Gradio research prototype:
 
@@ -143,7 +158,7 @@ python app/app.py
 
 Then open the generated local URL in a browser, upload a chest X-ray image, choose an architecture, select a checkpoint, and run prediction.
 
-## 14. Checkpoint placement
+## 15. Checkpoint placement
 
 Place trained model checkpoints in the checkpoints directory. The application checks for:
 
@@ -152,7 +167,7 @@ Place trained model checkpoints in the checkpoints directory. The application ch
 
 If loading fails, the UI shows a clear error rather than generating a fake output.
 
-## 15. Limitations
+## 16. Limitations
 
 - This repository is not a substitute for the Kaggle Paper 1 benchmark training experiment.
 - Paper 1 training is performed separately on Kaggle.
@@ -160,7 +175,7 @@ If loading fails, the UI shows a clear error rather than generating a fake outpu
 - Grad-CAM outputs are exploratory and not clinical ground truth.
 - This application is a research prototype and should not be used for clinical diagnosis.
 
-## 16. Research-only disclaimer
+## 17. Research-only disclaimer
 
 This project is a research prototype only and is not for clinical diagnosis or patient clinical decision-making.
 

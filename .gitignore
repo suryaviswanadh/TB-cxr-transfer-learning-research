@@ -26,6 +26,7 @@ checkpoints/*
 results/*
 !results/tables/
 !results/figures/
+!results/paper1_kaggle_results.md
 !results/tables/.gitkeep
 !results/figures/.gitkeep
 *.pt
