@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import sys
 from typing import Any
 
 import gradio as gr
@@ -8,11 +9,14 @@ import numpy as np
 import torch
 from PIL import Image
 
+APP_ROOT = Path(__file__).resolve().parent.parent
+if str(APP_ROOT) not in sys.path:
+    sys.path.insert(0, str(APP_ROOT))
+
 from src.dataset import preprocess_image
 from src.gradcam import generate_gradcam
 from src.models import create_model
 
-APP_ROOT = Path(__file__).resolve().parent.parent
 CHECKPOINT_DIR = APP_ROOT / "checkpoints"
 CONFIG_PATH = APP_ROOT / "configs" / "config.yaml"
 
