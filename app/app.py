@@ -52,6 +52,17 @@ def _safe_state_dict(candidate: Any) -> dict[str, torch.Tensor]:
     )
 
 
+def _infer_checkpoint_architecture(state_dict: dict[str, torch.Tensor]) -> str | None:
+    keys = set(state_dict)
+    if any(key.startswith("layer1.") for key in keys) and "fc.weight" in keys:
+        return "resnet50"
+    if any(key.startswith("features.denseblock") for key in keys) and "classifier.weight" in keys:
+        return "densenet121"
+    if any(key.startswith("features.0.") for key in keys) and any(key.startswith("classifier.1.") for key in keys):
+        return "efficientnet_b0"
+    return None
+
+
 def load_checkpoint(model: torch.nn.Module, checkpoint_path: str | Path, architecture: str) -> None:
     path = Path(checkpoint_path)
     if not path.exists():
@@ -59,13 +70,17 @@ def load_checkpoint(model: torch.nn.Module, checkpoint_path: str | Path, archite
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     checkpoint = torch.load(path, map_location=device)
+    state_dict = _safe_state_dict(checkpoint)
+    checkpoint_architecture = None
     if isinstance(checkpoint, dict) and checkpoint.get("architecture"):
         checkpoint_architecture = str(checkpoint["architecture"]).lower().strip()
-        if checkpoint_architecture != architecture.lower().strip():
-            raise ValueError(
-                f"Checkpoint architecture '{checkpoint_architecture}' does not match selected architecture '{architecture}'."
-            )
-    state_dict = _safe_state_dict(checkpoint)
+    if checkpoint_architecture is None:
+        checkpoint_architecture = _infer_checkpoint_architecture(state_dict)
+    if checkpoint_architecture and checkpoint_architecture != architecture.lower().strip():
+        raise ValueError(
+            f"This checkpoint appears to be for '{checkpoint_architecture}', but '{architecture}' is selected. "
+            f"Choose '{checkpoint_architecture}' in the Architecture dropdown."
+        )
 
     model_load_result = model.load_state_dict(state_dict, strict=False)
     if model_load_result.missing_keys or model_load_result.unexpected_keys:
@@ -131,7 +146,7 @@ def build_app() -> gr.Blocks:
                 image_input = gr.Image(label="Chest X-Ray Image", type="pil")
                 architecture_dropdown = gr.Dropdown(
                     choices=["resnet50", "densenet121", "efficientnet_b0"],
-                    value="resnet50",
+                    value="densenet121",
                     label="Architecture",
                 )
                 checkpoint_dropdown = gr.Dropdown(
